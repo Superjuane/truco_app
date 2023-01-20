@@ -7,5 +7,6 @@ class Assets {
   static const String libMain = 'lib/main.dart';
   static const String screensInitialScreen = 'lib/screens/initialScreen.dart';
   static const String screensSettings1Screen = 'lib/screens/settings1Screen.dart';
+  static const String utilsFunctions = 'lib/utils/functions.dart';
 
 }

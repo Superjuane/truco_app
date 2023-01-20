@@ -18,8 +18,8 @@ class AppTheme {
 
   TextTheme textScheme = const TextTheme(
     headline1: TextStyle(
-      color: Color.fromRGBO(246, 6, 246, 1.0),
-      fontSize: 96,
+      color: Color(0xFF1F1E1E),
+      fontSize: 35,
       fontWeight: FontWeight.w300,
       letterSpacing: -1.5,
     ),
@@ -28,8 +28,8 @@ class AppTheme {
   appBarTheme: const AppBarTheme(
   color: Color.fromRGBO(99, 111, 191,1),
   foregroundColor: Color.fromRGBO(246, 246, 246, 1.0),
-
   ),
+  scaffoldBackgroundColor: const Color(0xFFDAD8E8),
   colorScheme: colorScheme,
   textTheme: textScheme,
   );
@@ -51,8 +51,20 @@ class AppTheme {
 
     TextTheme textScheme = const TextTheme(
       headline1: TextStyle(
-        color: Color.fromRGBO(246, 6, 246, 1.0),
-        fontSize: 96,
+        color: Color(0xFFF9F9ED),
+        fontSize: 35,
+        fontWeight: FontWeight.w300,
+        letterSpacing: -1.5,
+      ),
+      bodyText1: TextStyle(
+        color: Color(0xFFF9F9ED),
+        fontSize: 18,
+        fontWeight: FontWeight.w300,
+        letterSpacing: -1.5,
+      ),
+      bodyText2: TextStyle(
+        color: Color(0xFFF9F9ED),
+        fontSize: 24,
         fontWeight: FontWeight.w300,
         letterSpacing: -1.5,
       ),
