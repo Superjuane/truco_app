@@ -23,6 +23,24 @@ class AppTheme {
       fontWeight: FontWeight.w300,
       letterSpacing: -1.5,
     ),
+    headline2: TextStyle(
+      color: Color(0xFF1F1E1E),
+      fontSize: 50,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 2.0,
+    ),
+    bodyText1: TextStyle(
+      color: Color(0xFF1F1E1E),
+      fontSize: 18,
+      fontWeight: FontWeight.w300,
+      letterSpacing: -1.5,
+    ),
+    bodyText2: TextStyle(
+      color: Color(0xFF1F1E1E),
+      fontSize: 24,
+      fontWeight: FontWeight.w300,
+      letterSpacing: -1.5,
+    ),
   );
   return ThemeData(
   appBarTheme: const AppBarTheme(
@@ -55,6 +73,12 @@ class AppTheme {
         fontSize: 35,
         fontWeight: FontWeight.w300,
         letterSpacing: -1.5,
+      ),
+      headline2: TextStyle(
+        color: Color(0xFFF9F9ED),
+        fontSize: 50,
+        fontWeight: FontWeight.w400,
+        letterSpacing: 2.0,
       ),
       bodyText1: TextStyle(
         color: Color(0xFFF9F9ED),

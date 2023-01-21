@@ -5,6 +5,9 @@ class Assets {
   static const String constAppTheme = 'lib/const/app_theme.dart';
   static const String generatedAssets = 'lib/generated/assets.dart';
   static const String libMain = 'lib/main.dart';
+  static const String routesRouteGenerator = 'lib/utils/routes/routeGenerator.dart';
+  static const String routesRoutingArgs = 'lib/utils/routes/routingArgs.dart';
+  static const String screensGameScreen = 'lib/screens/gameScreen.dart';
   static const String screensInitialScreen = 'lib/screens/initialScreen.dart';
   static const String screensSettings1Screen = 'lib/screens/settings1Screen.dart';
   static const String utilsFunctions = 'lib/utils/functions.dart';

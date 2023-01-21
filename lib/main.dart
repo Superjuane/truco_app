@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/services.dart';
+import 'package:truco_app/utils/routes/routeGenerator.dart';
 import 'const/app_theme.dart';
-import 'screens/initialScreen.dart';
-import 'screens/settings1Screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,10 +29,12 @@ class MyApp extends StatelessWidget {
         darkTheme: AppTheme.darkTheme(),
         themeMode: ThemeMode.system,
         initialRoute: '/',
-        routes: {
-          '/': (context) => const InitialScreen(),
-          '/settings1': (context) => const Settings1Screen(),
-        },
+        onGenerateRoute: RouteGenerator.generateRoute,
+        // routes: {
+        //   '/': (context) => const InitialScreen(),
+        //   '/settings1': (context) => const Settings1Screen(),
+        //   '/game': (context) => const GameScreen(GameArgs),
+        // },
       );
     });
   }
