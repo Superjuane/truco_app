@@ -16,3 +16,35 @@ String randomName() {
   // Concatenate the strings and return the result
   return "$string1 $string2";
 }
+
+String adjustText(String playerNam) {
+  String result = playerNam, name="", surname="";
+  int i = 0;
+  while(i < playerNam.length && playerNam[i] != " "){
+    name += playerNam[i];
+    i++;
+  }
+  while(i < playerNam.length){
+    surname += playerNam[i];
+    i++;
+  }
+  if(surname.length > 10){
+    surname = surname.substring(0,9)+'...';
+  }
+  if(name == playerNam){
+    name = playerNam.substring(0, playerNam.length ~/ 2);
+    surname = playerNam.substring(playerNam.length ~/ 2);
+  }
+  result = name + "\n" + surname;
+  return result;
+}
+
+int maxPlayerNameHeight(List<String> list){
+  int max = 2;
+  for(int i = 0; i < list.length; i++){
+    if(list[i].length / 13 > max){
+      max = (list[i].length / 9).round();
+    }
+  }
+  return max;
+}

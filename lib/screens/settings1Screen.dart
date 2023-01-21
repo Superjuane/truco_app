@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:truco_app/utils/functions.dart';
 import 'package:truco_app/utils/routes/routingArgs.dart';
 
@@ -61,6 +62,8 @@ class _Settings1ScreenState extends State<Settings1Screen> {
                             IconButton(onPressed: (){
                               setState((){
                               namesGenerated = [];
+                              myControllers.forEach ((c) => {c.clear()});
+
                               for (var i = 0; i < 4; i++) {
                                 namesGenerated.add(randomName());
                               }
@@ -84,6 +87,9 @@ class _Settings1ScreenState extends State<Settings1Screen> {
                               children: [
 
                                 TextField(
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(25),
+                                  ],
                                   controller: myControllers[0],
                                   decoration: InputDecoration(
                                     filled: true,
@@ -222,7 +228,9 @@ class _Settings1ScreenState extends State<Settings1Screen> {
                                namesResult.add(myControllers[i].text);
                              }
                            }
-                           Navigator.pushNamedAndRemoveUntil(context, '/game', (Route<dynamic> route) => false, arguments: GameArgs(nPlayers, namesResult, flor, [0,0,0,0]));
+                           //mejor no // Navigator.pushNamedAndRemoveUntil(context, '/game', (Route<dynamic> route) => false, arguments: GameArgs(nPlayers, namesResult, flor, [0,0,0,0]));
+                           // Navigator.popAndPushNamed(context, '/game', arguments: GameArgs(nPlayers, namesResult, flor, [0,0,0,0]));
+                           Navigator.pushNamed(context, '/game', arguments: GameArgs(nPlayers, namesResult, flor, [0,0,0,0]));
                          },
                          label: const Text("Empezar  Partida"),
                        ),

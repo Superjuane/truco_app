@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../utils/functions.dart';
 import '../utils/routes/routingArgs.dart';
 
 class GameScreen extends StatefulWidget {
@@ -70,20 +71,21 @@ class _GameScreenState extends State<GameScreen> {
                     Text("TRUCO", style: Theme.of(context).textTheme.headline2),
                   ],
                 ),
-
-                 widget.gameArgs.flor ? SvgPicture.asset(
-                  "resources/icons/flower-svgrepo-com.svg",
-                  height: 50,
-                  width: 50,
-                  color: Theme.of(context).textTheme.headline2!.color,
-                ) : SvgPicture.asset((darkModeOn) ?
-                   "resources/icons/flower-svgrepo-com-not-dark.svg"
-                   : "resources/icons/flower-svgrepo-com-not-light.svg",
-                   height: 50,
-                   width: 50,
-                   //color: Theme.of(context).textTheme.headline2!.color,
-                 ),
-
+                widget.gameArgs.flor
+                    ? SvgPicture.asset(
+                        "resources/icons/flower-svgrepo-com.svg",
+                        height: 50,
+                        width: 50,
+                        color: Theme.of(context).textTheme.headline2!.color,
+                      )
+                    : SvgPicture.asset(
+                        (darkModeOn)
+                            ? "resources/icons/flower-svgrepo-com-not-dark.svg"
+                            : "resources/icons/flower-svgrepo-com-not-light.svg",
+                        height: 50,
+                        width: 50,
+                        //color: Theme.of(context).textTheme.headline2!.color,
+                      ),
               ]),
               SizedBox(
                 child: Stack(
@@ -92,12 +94,27 @@ class _GameScreenState extends State<GameScreen> {
                         ? 'resources/images/notebook_background.jpg' //DARK MODE
                         : 'resources/images/notebook_background.jpg'),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: _buildBackground1(),
+                    ),
+                    Container(
+                      height: 5 + 25.5 * maxPlayerNameHeight(widget.gameArgs.playerNames),
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(width: 1.0, color: Colors.black),
+                        ),
+                        color: Colors.transparent,
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: _buildScoreBoards(),
                     ),
                   ],
                 ),
               ),
+
             ],
           ),
         ),
@@ -110,21 +127,58 @@ class _GameScreenState extends State<GameScreen> {
     for (int i = 0; i < widget.gameArgs.nPlayers; i++) {
       scoreBoards.add(
         Expanded(
-          child: Column(
-            children: [
-              Text(
-                widget.gameArgs.playerNames[i],
-                style: Theme.of(context).textTheme.headline6,
-              ),
-              Text(
-                widget.gameArgs.puntos![i].toString(),
-                style: Theme.of(context).textTheme.headline4,
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.only(top:12.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  adjustText(widget.gameArgs.playerNames[i]),
+                  style: Theme.of(context).textTheme.bodyText1,
+                  textAlign: TextAlign.center,
+                ),
+                Text(
+                  widget.gameArgs.puntos![i].toString(),
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+              ],
+            ),
           ),
         ),
       );
+      // if(i < widget.gameArgs.nPlayers - 1)
+      //   scoreBoards.add(Container(color: Colors.black, width: 1, height: 300));
     }
     return scoreBoards;
   }
+
+  List<Widget> _buildBackground1() {
+    List<Widget> background = [];
+    for (int i = 0; i < widget.gameArgs.nPlayers; i++) {
+      background.add(
+        Expanded(
+          child: Container(
+            // decoration: BoxDecoration(
+            //   border: Border.all(
+            //     color: Theme.of(context).textTheme.headline2!.color!,
+            //     width: 1,
+            //   ),
+            //   borderRadius: BorderRadius.circular(12),
+            // ),
+          ),
+        ),
+      );
+      if (i < widget.gameArgs.nPlayers - 1) {
+        background.add(Container(
+          color: Colors.black,
+          width: 1,
+          height: 300,
+        ));
+      }
+    }
+    return background;
+  }
+
 }
+
+
