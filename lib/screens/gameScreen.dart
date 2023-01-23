@@ -87,6 +87,7 @@ class _GameScreenState extends State<GameScreen> {
                         //color: Theme.of(context).textTheme.headline2!.color,
                       ),
               ]),
+              const SizedBox(height: 15,),
               SizedBox(
                 child: Stack(
                   children: [
@@ -98,7 +99,8 @@ class _GameScreenState extends State<GameScreen> {
                       children: _buildBackground1(),
                     ),
                     Container(
-                      height: 5 + 25.5 * maxPlayerNameHeight(widget.gameArgs.playerNames),
+                      // height: 5 + 25.5 * (maxPlayerNameHeight(widget.gameArgs.playerNames)+1),
+                      height: 45,
                       width: double.infinity,
                       decoration: const BoxDecoration(
                         border: Border(
@@ -114,12 +116,46 @@ class _GameScreenState extends State<GameScreen> {
                   ],
                 ),
               ),
-
+              Expanded(
+                child: Container(
+                  height: double.infinity,
+                  width: double.infinity,
+                  // color: Colors.green,
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: _buildButtons(),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  List<Widget> _buildButtons(){
+    List<Widget> buttonColumns = [];
+    int n = widget.gameArgs.nPlayers;
+    for (int i = 0; i < n; i++) {
+      buttonColumns.add(
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(child: ElevatedButton(onPressed: (){}, child: Text(n == 4 ? "E" : " ENVIDO "))),
+              ElevatedButton(onPressed: (){}, child: Text(n == 4 ? "T" :"  TRUCO  ")),
+              if(widget.gameArgs.flor) ElevatedButton(onPressed: (){}, child: Text(n == 4 ? "F" :"   FLOR   ")),
+              ElevatedButton(onPressed: (){}, child: Text(n == 4 ? "G" :"GANADO")),
+            ],
+          ),
+        )
+      );
+    }
+    return buttonColumns;
   }
 
   List<Widget> _buildScoreBoards() {
@@ -133,13 +169,25 @@ class _GameScreenState extends State<GameScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  adjustText(widget.gameArgs.playerNames[i]),
-                  style: Theme.of(context).textTheme.bodyText1,
+                  // adjustText(widget.gameArgs.playerNames[i]),
+            widget.gameArgs.playerNames[i],
+                  style: const TextStyle(
+                    color: Color(0xFF1F1E1E),
+                    fontSize: 19,
+                    fontWeight: FontWeight.w300,
+                    letterSpacing: -1.5,
+                  ),
                   textAlign: TextAlign.center,
                 ),
+                const SizedBox(height: 20,),
                 Text(
                   widget.gameArgs.puntos![i].toString(),
-                  style: Theme.of(context).textTheme.headline4,
+                  style: TextStyle(
+                    color: Color(0xFF1F1E1E),
+                    fontSize: 50,
+                    fontWeight: FontWeight.w300,
+                    letterSpacing: -1.5,
+                  ),
                 ),
               ],
             ),

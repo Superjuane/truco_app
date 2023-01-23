@@ -151,6 +151,12 @@ class _Settings1ScreenState extends State<Settings1Screen> {
                                     children: [
                                       if(nPlayers < 4)GestureDetector(
                                         onTap: () {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                              content: Text(' ⚠️DE MOMENTO SOLO SE PUEDE\n '
+                                                  'JUGAR CON DOS EQUIPOS ⚠️'),
+                                            )
+                                          );
                                           setState(() {
                                             ++nPlayers;
                                           });
@@ -230,7 +236,7 @@ class _Settings1ScreenState extends State<Settings1Screen> {
                            }
                            //mejor no // Navigator.pushNamedAndRemoveUntil(context, '/game', (Route<dynamic> route) => false, arguments: GameArgs(nPlayers, namesResult, flor, [0,0,0,0]));
                            // Navigator.popAndPushNamed(context, '/game', arguments: GameArgs(nPlayers, namesResult, flor, [0,0,0,0]));
-                           Navigator.pushNamed(context, '/game', arguments: GameArgs(nPlayers, namesResult, flor, [0,0,0,0]));
+                           Navigator.pushNamed(context, '/game', arguments: GameArgs(2, namesResult, flor, [0,0,0,0]));
                          },
                          label: const Text("Empezar  Partida"),
                        ),
