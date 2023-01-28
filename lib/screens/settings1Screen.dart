@@ -16,6 +16,7 @@ class _Settings1ScreenState extends State<Settings1Screen> {
   var nPlayers = 2;
   List<String> namesGenerated = [];
   bool flor = false;
+  bool quince = false;
   final List<TextEditingController> myControllers = [TextEditingController(), TextEditingController(), TextEditingController(), TextEditingController()];
 
   refreshNames() {
@@ -88,7 +89,7 @@ class _Settings1ScreenState extends State<Settings1Screen> {
 
                                 TextField(
                                   inputFormatters: [
-                                    LengthLimitingTextInputFormatter(25),
+                                    LengthLimitingTextInputFormatter(21),
                                   ],
                                   controller: myControllers[0],
                                   decoration: InputDecoration(
@@ -103,6 +104,9 @@ class _Settings1ScreenState extends State<Settings1Screen> {
                                 ),
                                 const SizedBox(height: 10),
                                 TextField(
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(21),
+                                  ],
                                   controller: myControllers[1],
                                   decoration: InputDecoration(
                                     filled: true,
@@ -208,6 +212,25 @@ class _Settings1ScreenState extends State<Settings1Screen> {
                               }),
                             ],
                           ),
+                        ),
+                        const SizedBox(height: 30),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.85,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(22),
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text("Jugar a 15", style: Theme.of(context).textTheme.bodyText2),
+                              Switch(value: quince, activeColor: const Color(0xFF5361BD),onChanged: (value) {
+                                setState(() {
+                                  quince = value;
+                                });
+                              }),
+                            ],
+                          ),
                         )
 
                       ],
@@ -236,7 +259,7 @@ class _Settings1ScreenState extends State<Settings1Screen> {
                            }
                            //mejor no // Navigator.pushNamedAndRemoveUntil(context, '/game', (Route<dynamic> route) => false, arguments: GameArgs(nPlayers, namesResult, flor, [0,0,0,0]));
                            // Navigator.popAndPushNamed(context, '/game', arguments: GameArgs(nPlayers, namesResult, flor, [0,0,0,0]));
-                           Navigator.pushNamed(context, '/game', arguments: GameArgs(2, namesResult, flor, [0,0,0,0]));
+                           Navigator.pushNamed(context, '/game', arguments: GameArgs(2, namesResult, flor, [0,0,0,0], quince));
                          },
                          label: const Text("Empezar  Partida"),
                        ),

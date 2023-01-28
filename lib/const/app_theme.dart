@@ -13,7 +13,10 @@ class AppTheme {
     tertiary: const Color.fromRGBO(65, 57, 62,1),
     onTertiary: const Color.fromRGBO(246, 246, 246, 1.0),
     //background: const Color.fromRGBO(217, 219, 241,1),
-    background: const Color.fromRGBO(27, 219, 241,1),
+    background: const Color(0xFF7563A4),
+      surface: const Color(0xFFF60606),
+      primaryContainer: const Color(0xFF07E7D1),
+
   );
 
   TextTheme textScheme = const TextTheme(
@@ -25,7 +28,7 @@ class AppTheme {
     ),
     headline2: TextStyle(
       color: Color(0xFF1F1E1E),
-      fontSize: 50,
+      fontSize: 35,
       fontWeight: FontWeight.w400,
       letterSpacing: 2.0,
     ),
@@ -48,6 +51,7 @@ class AppTheme {
   foregroundColor: Color.fromRGBO(246, 246, 246, 1.0),
   ),
   scaffoldBackgroundColor: const Color(0xFFDAD8E8),
+  backgroundColor: const Color(0xFFCEC6EA),
   colorScheme: colorScheme,
   textTheme: textScheme,
   );
@@ -76,7 +80,7 @@ class AppTheme {
       ),
       headline2: TextStyle(
         color: Color(0xFFF9F9ED),
-        fontSize: 50,
+        fontSize: 35,
         fontWeight: FontWeight.w400,
         letterSpacing: 2.0,
       ),

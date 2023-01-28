@@ -3,6 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../utils/functions.dart';
 import '../utils/routes/routingArgs.dart';
+import '../widgets/envidoDialog.dart';
+import '../widgets/trucoDialog.dart';
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key, required this.gameArgs});
@@ -14,6 +16,17 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
+  late String titulo;
+  bool gana1 = false;
+  bool gana2 = false;
+  late int winPoints = widget.gameArgs.quince? 15 : 30;
+
+  @override
+  void initState() {
+    super.initState();
+    titulo = widget.gameArgs.quince ? "TRUCO (a 15)" : "TRUCO";
+  }
+
   Future<bool> _onWillPop(BuildContext context) async {
     bool? exitResult = await showDialog(
       context: context,
@@ -58,6 +71,14 @@ class _GameScreenState extends State<GameScreen> {
     var brightness = MediaQuery.of(context).platformBrightness;
     bool darkModeOn = brightness == Brightness.dark;
 
+    setState(() {
+      if(widget.gameArgs.puntos![0] >= winPoints){
+        gana1 = true;
+      }
+      if(widget.gameArgs.puntos![1] >= winPoints){
+        gana2 = true;
+      }
+    });
     return WillPopScope(
       onWillPop: () => _onWillPop(context),
       child: Scaffold(
@@ -68,7 +89,7 @@ class _GameScreenState extends State<GameScreen> {
               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
                 Row(
                   children: [
-                    Text("TRUCO", style: Theme.of(context).textTheme.headline2),
+                    Text(titulo, style: Theme.of(context).textTheme.headline2),
                   ],
                 ),
                 widget.gameArgs.flor
@@ -87,7 +108,9 @@ class _GameScreenState extends State<GameScreen> {
                         //color: Theme.of(context).textTheme.headline2!.color,
                       ),
               ]),
-              const SizedBox(height: 15,),
+              const SizedBox(
+                height: 15,
+              ),
               SizedBox(
                 child: Stack(
                   children: [
@@ -116,8 +139,9 @@ class _GameScreenState extends State<GameScreen> {
                   ],
                 ),
               ),
+
               Expanded(
-                child: Container(
+                child: (!gana1 && !gana2) ? Container(
                   height: double.infinity,
                   width: double.infinity,
                   // color: Colors.green,
@@ -128,7 +152,9 @@ class _GameScreenState extends State<GameScreen> {
                       children: _buildButtons(),
                     ),
                   ),
-                ),
+                ): SizedBox(
+                  height: 0,
+                  width: 0,),
               ),
             ],
           ),
@@ -137,23 +163,45 @@ class _GameScreenState extends State<GameScreen> {
     );
   }
 
-  List<Widget> _buildButtons(){
+  List<Widget> _buildButtons() {
     List<Widget> buttonColumns = [];
     int n = widget.gameArgs.nPlayers;
     for (int i = 0; i < n; i++) {
-      buttonColumns.add(
-        Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(child: ElevatedButton(onPressed: (){}, child: Text(n == 4 ? "E" : " ENVIDO "))),
-              ElevatedButton(onPressed: (){}, child: Text(n == 4 ? "T" :"  TRUCO  ")),
-              if(widget.gameArgs.flor) ElevatedButton(onPressed: (){}, child: Text(n == 4 ? "F" :"   FLOR   ")),
-              ElevatedButton(onPressed: (){}, child: Text(n == 4 ? "G" :"GANADO")),
-            ],
-          ),
-        )
-      );
+      buttonColumns.add(Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+                child: ElevatedButton(
+                    onPressed: () async {
+                      final PointsResult result =
+                          await _displayEnvidoDialog(context, i);
+                      setState(() {
+                        widget.gameArgs.puntos![result.player] += result.points;
+                      });
+                    },
+                    child: Text(n == 4 ? "E" : " ENVIDO "))),
+            if (widget.gameArgs.flor)
+              ElevatedButton(
+                  onPressed: () {}, child: Text(n == 4 ? "F" : "    FLOR   ")),
+            ElevatedButton(
+                onPressed: () async {
+                  final PointsResult result =
+                  await _displayTrucoDialog(context, i);
+                  setState(() {
+                    widget.gameArgs.puntos![result.player] += result.points;
+                  });
+                },
+                child: Text(n == 4 ? "T" : "  TRUCO ")),
+            ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    widget.gameArgs.puntos![i] += 1;
+                  });
+                }, child: Text(n == 4 ? "G" : "GANADO")),
+          ],
+        ),
+      ));
     }
     return buttonColumns;
   }
@@ -164,13 +212,13 @@ class _GameScreenState extends State<GameScreen> {
       scoreBoards.add(
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.only(top:12.0),
+            padding: const EdgeInsets.only(top: 12.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
                   // adjustText(widget.gameArgs.playerNames[i]),
-            widget.gameArgs.playerNames[i],
+                  widget.gameArgs.playerNames[i],
                   style: const TextStyle(
                     color: Color(0xFF1F1E1E),
                     fontSize: 19,
@@ -179,7 +227,9 @@ class _GameScreenState extends State<GameScreen> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 20,),
+                const SizedBox(
+                  height: 20,
+                ),
                 Text(
                   widget.gameArgs.puntos![i].toString(),
                   style: TextStyle(
@@ -206,14 +256,14 @@ class _GameScreenState extends State<GameScreen> {
       background.add(
         Expanded(
           child: Container(
-            // decoration: BoxDecoration(
-            //   border: Border.all(
-            //     color: Theme.of(context).textTheme.headline2!.color!,
-            //     width: 1,
-            //   ),
-            //   borderRadius: BorderRadius.circular(12),
-            // ),
-          ),
+              // decoration: BoxDecoration(
+              //   border: Border.all(
+              //     color: Theme.of(context).textTheme.headline2!.color!,
+              //     width: 1,
+              //   ),
+              //   borderRadius: BorderRadius.circular(12),
+              // ),
+              ),
         ),
       );
       if (i < widget.gameArgs.nPlayers - 1) {
@@ -227,6 +277,21 @@ class _GameScreenState extends State<GameScreen> {
     return background;
   }
 
+  _displayEnvidoDialog(BuildContext context, int playerCanta) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return EnvidoDialog(context, widget.gameArgs, playerCanta);
+        }
+    );
+  }
+
+  _displayTrucoDialog(BuildContext context, int playerCanta) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return TrucoDialog(context, widget.gameArgs, playerCanta);
+        }
+    );
+  }
 }
-
-
