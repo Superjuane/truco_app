@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class InitialScreen extends StatefulWidget {
@@ -16,43 +18,70 @@ class _InitialScreenState extends State<InitialScreen> {
       /*appBar: AppBar(
         title: Text(widget.title),
       ),*/
-      body: Stack(
+      body: Column(
+
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 8.0),
+            padding: const EdgeInsets.only(top: 35.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image(
-                    image: NetworkImage(
-                        'https://trucoargentino.net.ar/img/logo_truco_argentino.png')),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: Image(
+                      image: AssetImage("resources/images/TRUCO.png")),
+                ),
               ],
             ),
           ),
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+          const SizedBox(height: 40.0),
+          Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/settings1');
-                    },
-                    child: Text("Nueva Partida")),
-                ElevatedButton(
-                    onPressed: () {
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  height: MediaQuery.of(context).size.height * 0.075,
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/settings1');
+                      },
+                      child: Text("Nueva Partida")),
+                ),
+                const SizedBox(height: 15.0),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  height: MediaQuery.of(context).size.height * 0.075,                  child: ElevatedButton(
+                      onPressed: () {
 
-                    },
-                    child: Text("Continuar Partida")),
-                ElevatedButton(
-                    onPressed: () {
+                      },
+                      child: Text("Continuar Partida")),
+                ),
+                const SizedBox(height: 15.0),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  height: MediaQuery.of(context).size.height * 0.075,
+                  child: ElevatedButton(
+                      onPressed: () {
 
-                    },
-                    child: Text("Cargar Partida")),
+                      },
+                      child: Text("Cargar Partida")),
+                ),
+                const SizedBox(height: 15.0),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  height: MediaQuery.of(context).size.height * 0.075,
+                  child: ElevatedButton(
+                      onPressed: null,
+                      onLongPress: () {
+                        exit(0);
+                      },
+                      child: Text("Salir")),
+                ),
               ],
             ),
-          ),
         ],
       ),
+
     );
   }
 }

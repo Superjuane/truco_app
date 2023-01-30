@@ -27,8 +27,14 @@ class AppTheme {
       letterSpacing: -1.5,
     ),
     headline2: TextStyle(
+    color: Color(0xFF1F1E1E),
+    fontSize: 35,
+    fontWeight: FontWeight.w400,
+    letterSpacing: 2.0,
+  ),
+    headline3: TextStyle(
       color: Color(0xFF1F1E1E),
-      fontSize: 35,
+      fontSize: 24,
       fontWeight: FontWeight.w400,
       letterSpacing: 2.0,
     ),
@@ -81,6 +87,12 @@ class AppTheme {
       headline2: TextStyle(
         color: Color(0xFFF9F9ED),
         fontSize: 35,
+        fontWeight: FontWeight.w400,
+        letterSpacing: 2.0,
+      ),
+      headline3: TextStyle(
+        color: Color(0xFFF9F9ED),
+        fontSize: 24,
         fontWeight: FontWeight.w400,
         letterSpacing: 2.0,
       ),

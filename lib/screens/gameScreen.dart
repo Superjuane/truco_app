@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -19,11 +22,16 @@ class _GameScreenState extends State<GameScreen> {
   late String titulo;
   bool gana1 = false;
   bool gana2 = false;
+  final controller = ConfettiController();
+  bool isConfettiPlaying = false;
   late int winPoints = widget.gameArgs.quince? 15 : 30;
 
   @override
   void initState() {
     super.initState();
+    controller.addListener(() {
+      isConfettiPlaying = controller.state == ConfettiControllerState.playing;
+    });
     titulo = widget.gameArgs.quince ? "TRUCO (a 15)" : "TRUCO";
   }
 
@@ -74,91 +82,157 @@ class _GameScreenState extends State<GameScreen> {
     setState(() {
       if(widget.gameArgs.puntos![0] >= winPoints){
         gana1 = true;
+        controller.play();
       }
       if(widget.gameArgs.puntos![1] >= winPoints){
         gana2 = true;
+        controller.play();
       }
     });
     return WillPopScope(
       onWillPop: () => _onWillPop(context),
-      child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            children: [
-              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                Row(
-                  children: [
-                    Text(titulo, style: Theme.of(context).textTheme.headline2),
-                  ],
-                ),
-                widget.gameArgs.flor
-                    ? SvgPicture.asset(
-                        "resources/icons/flower-svgrepo-com.svg",
-                        height: 50,
-                        width: 50,
-                        color: Theme.of(context).textTheme.headline2!.color,
-                      )
-                    : SvgPicture.asset(
-                        (darkModeOn)
-                            ? "resources/icons/flower-svgrepo-com-not-dark.svg"
-                            : "resources/icons/flower-svgrepo-com-not-light.svg",
-                        height: 50,
-                        width: 50,
-                        //color: Theme.of(context).textTheme.headline2!.color,
-                      ),
-              ]),
-              const SizedBox(
-                height: 15,
-              ),
-              SizedBox(
-                child: Stack(
-                  children: [
-                    Image.asset((darkModeOn)
-                        ? 'resources/images/notebook_background.jpg' //DARK MODE
-                        : 'resources/images/notebook_background.jpg'),
+      child: Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          Scaffold(
+            body: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                children: [
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: _buildBackground1(),
+                      children: [
+                        Text(titulo, style: Theme.of(context).textTheme.headline2),
+                      ],
                     ),
-                    Container(
-                      // height: 5 + 25.5 * (maxPlayerNameHeight(widget.gameArgs.playerNames)+1),
-                      height: 45,
-                      width: double.infinity,
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(width: 1.0, color: Colors.black),
+                    widget.gameArgs.flor
+                        ? SvgPicture.asset(
+                            "resources/icons/flower-svgrepo-com.svg",
+                            height: 50,
+                            width: 50,
+                            color: Theme.of(context).textTheme.headline2!.color,
+                          )
+                        : SvgPicture.asset(
+                            (darkModeOn)
+                                ? "resources/icons/flower-svgrepo-com-not-dark.svg"
+                                : "resources/icons/flower-svgrepo-com-not-light.svg",
+                            height: 50,
+                            width: 50,
+                            //color: Theme.of(context).textTheme.headline2!.color,
+                          ),
+                  ]),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  SizedBox(
+                    child: Stack(
+                      children: [
+                        Image.asset((darkModeOn)
+                            ? 'resources/images/notebook_background.jpg' //DARK MODE
+                            : 'resources/images/notebook_background.jpg'),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: _buildBackground1(),
                         ),
-                        color: Colors.transparent,
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: _buildScoreBoards(),
-                    ),
-                  ],
-                ),
-              ),
-
-              Expanded(
-                child: (!gana1 && !gana2) ? Container(
-                  height: double.infinity,
-                  width: double.infinity,
-                  // color: Colors.green,
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: _buildButtons(),
+                        Container(
+                          // height: 5 + 25.5 * (maxPlayerNameHeight(widget.gameArgs.playerNames)+1),
+                          height: 45,
+                          width: double.infinity,
+                          decoration: const BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(width: 1.0, color: Colors.black),
+                            ),
+                            color: Colors.transparent,
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: _buildScoreBoards(),
+                        ),
+                      ],
                     ),
                   ),
-                ): SizedBox(
-                  height: 0,
-                  width: 0,),
+
+                  Expanded(
+                    child: (!gana1 && !gana2) ? Container(
+                      height: double.infinity,
+                      width: double.infinity,
+                      // color: Colors.green,
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: _buildButtons(),
+                        ),
+                      ),
+                    ): SizedBox(
+                      height: 0,
+                      width: 0,),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          ConfettiWidget(
+            confettiController: controller,
+            blastDirection: pi/2,
+            shouldLoop: true,
+            emissionFrequency: 0.12,
+            gravity: 0.2,
+            numberOfParticles:15,
+            minBlastForce: 10 ,
+          ),
+          if(gana1 || gana2 ) Center(
+            child: Container(
+              height: 250,
+              width: 300,
+              decoration: BoxDecoration(
+                color: Theme.of(context).backgroundColor,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text((gana1) ? widget.gameArgs.playerNames[0] : widget.gameArgs.playerNames[1], style: Theme.of(context).textTheme.headline3,),
+                  Text("GANA !!!", style: Theme.of(context).textTheme.headline2,),
+                  Text("🥳 🥳 🥳", style: Theme.of(context).textTheme.headline2,),
+                ],
+              ),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              ConfettiWidget(
+                confettiController: controller,
+                blastDirection: pi/2,
+                shouldLoop: true,
+                emissionFrequency: 0.12,
+                gravity: 0.2,
+                numberOfParticles:15,
+                minBlastForce: 10 ,
+              ),
+
+              ConfettiWidget(
+                confettiController: controller,
+                blastDirection: pi/2,
+                shouldLoop: true,
+                emissionFrequency: 0.02,
+                gravity: 0.2,
+                numberOfParticles:15,
+                minBlastForce: 10 ,
               ),
             ],
           ),
-        ),
+          // if(gana1 || gana2 ) Center(
+          //   child: ElevatedButton(
+          //     onPressed: () {
+          //       Navigator.pop(context);
+          //     },
+          //     child: Text("Salir"),
+          //   ),
+          // )
+        ],
       ),
     );
   }

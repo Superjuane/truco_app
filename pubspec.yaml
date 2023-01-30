@@ -39,6 +39,7 @@ dependencies:
   dynamic_color: ^1.5.4
   flutter_svg: ^1.1.6
   fluttertoast: ^8.1.2
+  confetti: ^0.7.0
 
 dev_dependencies:
   flutter_test:
@@ -98,5 +99,6 @@ flutter:
     - resources/icons/flower-svgrepo-com-not-light.svg
     - resources/icons/flower-svgrepo-com-not-dark.svg
     - resources/images/notebook_background.jpg
+    - resources/images/TRUCO.png
 
 
